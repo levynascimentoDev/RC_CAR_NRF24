@@ -8,7 +8,7 @@ struct RCpackage {
   int16_t direction_y;
   int16_t servo_x;
 };
-// const int buzzer_pin;
+const int buzzer_pin = A5;
 const int leds_pin1 = A1;
 const int leds_pin2 = A0;
 
@@ -114,7 +114,7 @@ class RC_Car {
         analogWrite(l_engine_V, 0);
       }
 
-      if (package.direction_x < 0) {
+      if (package.direction_x > 0) {
 
         int speed = abs(package.direction_y);
         int turn = abs(package.direction_x);
@@ -125,7 +125,7 @@ class RC_Car {
         analogWrite(r_engine_V, constrain(package.direction_y != 0 ? speed - turn : turn, 0, 230));
         analogWrite(l_engine_V, package.direction_y != 0 ? constrain(speed, 0, 230) : 230);
 
-      } else if (package.direction_x > 0) {
+      } else if (package.direction_x < 0) {
 
         int speed = abs(package.direction_y);
         int turn = abs(package.direction_x);
@@ -143,20 +143,20 @@ class RC_Car {
     }
   
     void alarm() {
-      // if (package.buzzer) {
-      //   tone(buzzer, freq);
+      if (package.buzzer) {
+        tone(buzzer_pin, freq);
 
-      //   if (ascending) {
-      //     freq += 20;
-      //     if (freq >= 2000) ascending = false;
-      //   } else {
-      //     freq -= 20;
-      //     if (freq <= 1000) ascending = true;
-      //   }
+        if (ascending) {
+          freq += 20;
+          if (freq >= 1500) ascending = false;
+        } else {
+          freq -= 20;
+          if (freq <= 600) ascending = true;
+        }
         
-      // } else {
-      //   noTone(buzzer);
-      // }
+      } else {
+        noTone(buzzer_pin);
+      }
     }
 
     void lights() {
@@ -177,12 +177,14 @@ const byte ADDRESS[6] = "32802";
 void setup() {
 
   
-
+  pinMode(4, OUTPUT);
+  digitalWrite(4, HIGH);
   pinMode(leds_pin1, OUTPUT);
   pinMode(leds_pin2, OUTPUT);
+  pinMode(buzzer_pin, OUTPUT);
 
-  mycar.setLeftEngine(8, 9, 10);
-  mycar.setRightEngine(6, 7, 5);
+  mycar.setLeftEngine(9, 8, 10);
+  mycar.setRightEngine(7, 6, 5);
   mycar.begin();
 
   radio.begin();
@@ -216,6 +218,7 @@ void loop() {
   }
   mycar.moveCar();
   mycar.lights();
+  mycar.alarm();
 }
 
 
