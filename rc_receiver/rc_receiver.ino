@@ -1,5 +1,7 @@
 #include <SPI.h>
 #include <RF24.h>
+#include <Servo.h>
+
 
 struct RCpackage {
   bool buzzer;
@@ -8,9 +10,9 @@ struct RCpackage {
   int16_t direction_y;
   int16_t servo_x;
 };
-const int buzzer_pin = A5;
-const int leds_pin1 = A1;
-const int leds_pin2 = A0;
+const int buzzer_pin = 3;
+const int leds = A1;
+Servo myservo;
 
 class RC_Car {
 
@@ -74,11 +76,11 @@ class RC_Car {
       // left
       analogWrite(l_engine_V, 0);
       digitalWrite(l_engine_H, HIGH);
-      digitalWrite(l_engine_H, LOW);
+      digitalWrite(l_engine_L, LOW);
       // right
       analogWrite(r_engine_V, 0);
       digitalWrite(r_engine_H, HIGH);
-      digitalWrite(r_engine_H, LOW);
+      digitalWrite(r_engine_L, LOW);
     }
 
     void setLeftEngine(int pinHIGH, int pinLOW, int pinVelocity) {
@@ -161,14 +163,16 @@ class RC_Car {
 
     void lights() {
 
-      digitalWrite(leds_pin1, package.leds ? HIGH : LOW);
-      digitalWrite(leds_pin2, package.leds ? HIGH : LOW);
+      digitalWrite(leds, package.leds ? HIGH : LOW);
 
+    }
+    void head() {
+      myservo.write(package.servo_x);
     }
 
 };
 
-RF24 radio(3, 2);
+RF24 radio(9, 10);
 RC_Car mycar;
 
 unsigned long lastPacketTime = 0;
@@ -177,16 +181,24 @@ const byte ADDRESS[6] = "32802";
 void setup() {
 
   
-  pinMode(4, OUTPUT);
-  digitalWrite(4, HIGH);
-  pinMode(leds_pin1, OUTPUT);
-  pinMode(leds_pin2, OUTPUT);
+  pinMode(A0, OUTPUT); // STANDBY PIN 
+  digitalWrite(A0, HIGH); // STANDBY PIN (HIGH MOTOR ON)
+
+  // LEDS
+  pinMode(leds, OUTPUT);
+
+  // BUZZER 
   pinMode(buzzer_pin, OUTPUT);
 
-  mycar.setLeftEngine(9, 8, 10);
-  mycar.setRightEngine(7, 6, 5);
+  // SERVO  
+  myservo.attach(A2);
+
+  // CAR BEGIN 
+  mycar.setLeftEngine(8, 7, 6);
+  mycar.setRightEngine(4, 2, 5);
   mycar.begin();
 
+  // NRF24 BEGIN 
   radio.begin();
   radio.setChannel(100);
   radio.openReadingPipe(0, ADDRESS);
@@ -194,13 +206,11 @@ void setup() {
   radio.startListening();
   Serial.begin(9600);
   radio.setDataRate(RF24_250KBPS);
-
 }
 
 void loop() {
   
   if (radio.available()) {
-    
     radio.read(&mycar.package, sizeof(mycar.package));
 
     Serial.print("x: ");
@@ -215,10 +225,12 @@ void loop() {
     mycar.package.direction_y = 0;
     mycar.package.buzzer = false;
     mycar.package.leds = false;
+    mycar.package.servo_x = 90;
   }
   mycar.moveCar();
   mycar.lights();
   mycar.alarm();
+  mycar.head();
 }
 
 
