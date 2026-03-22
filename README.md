@@ -1,9 +1,9 @@
 # 🏎️ RC CAR WITH NRF24L01
 IDE (ARDUINO IDE)
 
-## 🎮 RADIO RC (PROTOTYPE)
+## 🎮 CONTROLLER (PROTOTYPE)
 
-![Radio RC Image](.//assets/imgs/rc_car.jpg)
+![Radio RC Image](.//assets/imgs/rc_controller.jpg.jpg.jpg)
 
 ### 📦ITEMS
 - 1x NRF24L01
@@ -33,10 +33,9 @@ IDE (ARDUINO IDE)
 - button_up = 8;
 
 
-
-
 ## 🚗 Car RC (PROTOTYPE)
 ![Radio RC Image](.//assets/imgs/rc_car(PROTOTYPE).jpg)
+
 ## 🚗 Car RC 1.0
 ![Radio RC Image](.//assets/imgs/RC_car_1.0.jpeg)
  - ### CIRCUIT
