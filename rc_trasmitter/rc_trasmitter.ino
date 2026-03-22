@@ -62,7 +62,7 @@ void setup() {
   radio.setDataRate(RF24_250KBPS);
   radio.setPALevel(RF24_PA_HIGH);
   radio.stopListening();
-
+  radio.setAutoAck(false);
 }
 
 void loop() {
@@ -70,7 +70,7 @@ void loop() {
   package.direction_x = map(analogRead(r_stk_x), 0, 1024, -255, 255);
   package.direction_y = map(analogRead(l_stk_y), 0, 1024, -255, 255);
   package.servo_x = map(analogRead(l_stk_x), 0, 1024, 0, 180);
-  
+
   // BUTTON LEFT (CLICK)
   if (!digitalRead(l_stk_b)) {
     if (millis() - buttonTimeout > 500) {
@@ -95,5 +95,5 @@ void loop() {
 
   // SEND PACKAGE TO RECEIVER 
   radio.write(&package, sizeof(package));
-  
+    
 }
