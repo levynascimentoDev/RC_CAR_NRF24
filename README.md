@@ -3,7 +3,7 @@ IDE (ARDUINO IDE)
 
 ## 🎮 CONTROLLER (PROTOTYPE)
 
-![Radio RC Image](.//assets/imgs/rc_controller.jpg.jpg.jpg)
+![Radio RC Image](.//assets/imgs/rc_controller.jpg)
 
 ### 📦ITEMS
 - 1x NRF24L01
