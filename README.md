@@ -36,12 +36,11 @@ IDE (ARDUINO IDE)
 
 
 ## 🚗 Car RC (PROTOTYPE)
-![Radio RC Image](.//assets/imgs/rc_controller.jpg)
+![Radio RC Image](.//assets/imgs/rc_car(PROTOTYPE).jpg)
 ## 🚗 Car RC 1.0
-<p>
-  <img src="./assets/imgs/RC_car_1.0.jpeg.png" width="45%">
-  <img src="./assets/imgs/circuit.jpeg.png" width="45%">
-</p>
+![Radio RC Image](.//assets/imgs/RC_car_1.0.jpeg)
+ - ### CIRCUIT
+  ![Radio RC Image](.//assets/imgs/circuit.jpeg)
 
 ### 📦 ITEMS
 - 1x Arduino Pro Mini 
